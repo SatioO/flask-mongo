@@ -1,5 +1,6 @@
-from flask import Flask
+from flask import Flask, jsonify
 from mongoengine import connect
+from app.controllers import main
 
 
 def connect_db(app):
@@ -18,6 +19,14 @@ def create_app(app_env):
     app.config.from_pyfile('config.py')
 
     db_client = connect_db(app)
+
+    # HTTP error handling
+    @app.errorhandler(404)
+    def not_found(error):
+        return jsonify({"status": "Not Found"}), 404
+
+    # register our blueprints
+    app.register_blueprint(main)
 
     return app
 
