@@ -1,6 +1,7 @@
-from flask import Flask, jsonify
+from flask import Flask
+from flask_restful import Resource, Api
 from mongoengine import connect
-from app.controllers import main
+from app.controllers import Posts
 from config import config_by_name
 
 
@@ -22,13 +23,10 @@ def create_app(app_env):
 
     db_client = connect_db(app)
 
-    # HTTP error handling
-    @app.errorhandler(404)
-    def not_found(error):
-        return jsonify({"status": "Not Found"}), 404
+    api = Api(app)
 
     # register our blueprints
-    app.register_blueprint(main)
+    api.add_resource(Posts, '/posts')
 
     return app
 
