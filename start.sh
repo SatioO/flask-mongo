@@ -1,2 +1,2 @@
-export APP_ENV=development
-python run.py
+export APP_ENV=dev
+python run.py run 

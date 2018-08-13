@@ -1,6 +1,7 @@
 from flask import Flask, jsonify
 from mongoengine import connect
 from app.controllers import main
+from config import config_by_name
 
 
 def connect_db(app):
@@ -14,7 +15,8 @@ def connect_db(app):
 def create_app(app_env):
     app = Flask(__name__, instance_relative_config=True)
     # Load the default configuration
-    app.config.from_object('config.' + app_env)
+    app.config.from_object(config_by_name[app_env])
+
     # Load the configuration from the instance folder
     app.config.from_pyfile('config.py')
 
